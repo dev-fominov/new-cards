@@ -1,30 +1,29 @@
 import { useEffect } from "react"
-import { z } from 'zod'
+import { boolean, z } from "zod"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
-import s from "./styles.module.css"
-import { useActions, useAppSelector } from "common/hooks"
-import { authThunks } from "./auth.slice"
-import { Navigate } from "react-router-dom"
+import { useActions } from "common/hooks"
+import { authThunks } from "../auth.slice"
 
 const formSchema = z
 	.object({
 		email: z.string().email('Incorrect email'),
-		password: z.string().min(7, 'The password is too short'),
-		confirmPassword: z.string().min(7, 'Repeat password'),
-	})
-	.refine((data) => data.password === data.confirmPassword, {
-		path: ['confirmPassword'],
-		message: 'The entered passwords do not match',
+		password: z.string().min(8, 'The password is too short'),
+		rememberMe: boolean(),
 	})
 
 type FormSchemaType = z.infer<typeof formSchema>
 
-export const SignUp = () => {
 
-	const { signUp, initializeApp } = useActions(authThunks)
 
-	const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
+// if (isLoggedIn) {
+// 	return <Navigate to={'/'} />
+// }
+
+
+export const SignIn = () => {
+
+	const { signIn } = useActions(authThunks)
 
 	const {
 		register,
@@ -34,11 +33,7 @@ export const SignUp = () => {
 		formState: { isDirty, isSubmitting, errors },
 	} = useForm<FormSchemaType>({ resolver: zodResolver(formSchema) })
 	const onSubmit: SubmitHandler<FormSchemaType> = (data) => {
-		const value = {
-			email: data.email,
-			password: data.password
-		}
-		signUp(value).unwrap()
+		signIn(data).unwrap()
 			.catch((err) => {
 				console.log(err)
 			})
@@ -48,13 +43,9 @@ export const SignUp = () => {
 		setFocus('email')
 	}, [])
 
-	if (isLoggedIn) {
-		return <Navigate to={'/'} />
-	}
-
 	return (
 		<div>
-			<div>Sign Up</div>
+			<div>Sign In</div>
 			<form onSubmit={handleSubmit(onSubmit)}>
 
 				<div className={s.itemInput}>
@@ -110,5 +101,5 @@ export const SignUp = () => {
 
 			</form>
 		</div>
-	);
+	)
 }

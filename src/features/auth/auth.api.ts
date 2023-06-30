@@ -2,14 +2,14 @@ import { instance } from "common/api/api"
 
 
 export const authAPI = {
-	login() {
-		return instance.post<any>('auth/login')
+	signIn(data: SignInType) {
+		return instance.post<any>('auth/login', data)
 	},
-	register() {
-		return instance.post<any>('auth/register')
+	signUp(data: SignUpType) {
+		return instance.post<AddedUserType>('auth/register', data)
 	},
 	me() {
-		return instance.get<any>('auth/me')
+		return instance.get<AuthResponseType>('auth/me')
 	},
 	updateName() {
 		return instance.put<any>('auth/me')
@@ -28,3 +28,33 @@ export const authAPI = {
 	}
 }
 
+
+export type SignUpType = {
+	email: string
+	password: string
+}
+
+export type SignInType = {
+	email: string
+	password: string
+	rememberMe: boolean
+}
+
+export type AddedUserType = {
+	addedUser: any
+	error?: string
+}
+
+export type AuthResponseType = {
+	_id: string;
+	email: string;
+	name: string;
+	avatar?: string;
+	publicCardPacksCount: number;   	// количество колод 
+	created: Date;
+	updated: Date;
+	isAdmin: boolean;
+	verified: boolean; 					// подтвердил ли почту 
+	rememberMe: boolean;
+	error?: string;
+} 
