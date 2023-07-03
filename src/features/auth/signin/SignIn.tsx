@@ -4,6 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useActions } from "common/hooks"
 import { authThunks } from "../auth.slice"
+import s from "../styles.module.css"
 
 const formSchema = z
 	.object({
@@ -76,27 +77,13 @@ export const SignIn = () => {
 						</span>
 					)}
 				</div>
-				<div className={s.itemInput}>
-					<label htmlFor="confirmPassword">Confirm Password</label>
-					<input
-						{...register("confirmPassword", { required: true })}
-						type="password"
-						id="confirmPassword"
-						aria-invalid={errors.confirmPassword ? 'true' : 'false'}
-					/>
-					{errors.confirmPassword && (
-						<span role='alert' className={s.error}>
-							{errors.confirmPassword?.message}
-						</span>
-					)}
-				</div>
 
 				<button
 					type='submit'
 					className={s.button}
 					disabled={!isDirty || isSubmitting}
 				>
-					Sign Up
+					Sign In
 				</button>
 
 			</form>
