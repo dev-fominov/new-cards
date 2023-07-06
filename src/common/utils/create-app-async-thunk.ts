@@ -1,5 +1,5 @@
-import { createAsyncThunk } from '@reduxjs/toolkit'
 import { AppDispatchType, AppRootStateType } from 'app/store'
+import { createAsyncThunk } from '@reduxjs/toolkit'
 
 /**
  * A utility function that adapts `createAsyncThunk` to use the correct types for the app.

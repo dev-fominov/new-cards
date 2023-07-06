@@ -1,9 +1,11 @@
 import { useEffect } from 'react'
+
+import { Routes, Route, Navigate, NavLink } from 'react-router-dom'
+
 import { useActions } from 'common/hooks'
-import { SignUp } from 'features/auth/SignUp'
 import { authThunks } from 'features/auth/auth.slice'
-import { Routes, Route, Navigate } from 'react-router-dom'
 import { SignIn } from 'features/auth/signin/SignIn'
+import { SignUp } from 'features/auth/SignUp'
 import { Test } from 'features/Test'
 
 function App() {
@@ -13,8 +15,30 @@ function App() {
     initializeApp({})
   }, [])
 
+  useEffect(() => {
+    initializeApp({})
+  }, [])
+
+  const menu = [
+    { id: 1, title: 'Home', to: '/' },
+    { id: 2, title: 'Sign Up', to: '/signup' },
+    { id: 3, title: 'Sign In', to: '/signin' },
+  ]
+
+  const linkActive = (isActive: boolean) => {
+    return { color: isActive ? 'red' : 'black' }
+  }
+
   return (
     <div className="App">
+      {menu.map(m => {
+        return (
+          <NavLink key={m.id} to={m.to} style={params => linkActive(params.isActive)}>
+            {m.title}
+          </NavLink>
+        )
+      })}
+
       <Routes>
         <Route path={'/'} element={<Test />} />
         <Route path={'/signup'} element={<SignUp />} />

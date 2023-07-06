@@ -1,11 +1,14 @@
 import { useEffect } from 'react'
-import { z } from 'zod'
-import { useForm, SubmitHandler } from 'react-hook-form'
+
 import { zodResolver } from '@hookform/resolvers/zod'
-import s from './styles.module.css'
-import { useActions, useAppSelector } from 'common/hooks'
-import { authThunks } from './auth.slice'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import { Navigate } from 'react-router-dom'
+import { z } from 'zod'
+
+import { authThunks } from './auth.slice'
+import s from './styles.module.css'
+
+import { useActions, useAppSelector } from 'common/hooks'
 
 const formSchema = z
   .object({
@@ -37,11 +40,10 @@ export const SignUp = () => {
       email: data.email,
       password: data.password,
     }
+
     signUp(value)
       .unwrap()
-      .catch(err => {
-        console.log(err)
-      })
+      .catch(err => err)
   }
 
   useEffect(() => {

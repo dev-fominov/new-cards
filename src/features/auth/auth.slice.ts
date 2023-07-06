@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { createAppAsyncThunk } from 'common/utils/create-app-async-thunk'
+
 import { AddedUserType, SignInType, SignUpType, authAPI } from './auth.api'
+
+import { createAppAsyncThunk } from 'common/utils/create-app-async-thunk'
 
 const initialState = { isLoggedIn: false }
 
@@ -9,6 +11,7 @@ const signIn = createAppAsyncThunk<any, SignInType>(
   async (arg, { rejectWithValue }) => {
     const res = await authAPI.signIn(arg)
     // if (res.data.resultCode === ResultCode.OK) {
+
     return { isLoggedIn: true }
     // } else {
     // 	const isShowError = !res.data.fieldsErrors.length
@@ -22,6 +25,7 @@ const signUp = createAppAsyncThunk<AddedUserType, SignUpType>(
   async (arg, { rejectWithValue }) => {
     const res = await authAPI.signUp(arg)
     const error = res.data.error
+
     if (!error) {
       return { addedUser: res.data.addedUser, error: res.data.error }
     } else {
@@ -34,11 +38,8 @@ const initializeApp = createAppAsyncThunk<{ isLoggedIn: boolean }, void>(
   'app/initializeApp',
   async (_, { dispatch, rejectWithValue }) => {
     const res = await authAPI.me()
-    try {
-      return { isLoggedIn: true }
-    } finally {
-      return rejectWithValue({ data: res.data, showGlobalError: false })
-    }
+
+    return { isLoggedIn: true }
   }
 )
 
@@ -50,7 +51,6 @@ const slice = createSlice({
     builder
       .addCase(signUp.fulfilled, (state, action) => {
         // redirect to signin page
-        console.log(state, action)
       })
       .addCase(initializeApp.fulfilled, (state, action) => {
         state.isLoggedIn = action.payload.isLoggedIn

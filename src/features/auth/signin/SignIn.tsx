@@ -1,10 +1,13 @@
 import { useEffect } from 'react'
-import { boolean, z } from 'zod'
-import { useForm, SubmitHandler } from 'react-hook-form'
+
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useActions } from 'common/hooks'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { boolean, z } from 'zod'
+
 import { authThunks } from '../auth.slice'
 import s from '../styles.module.css'
+
+import { useActions } from 'common/hooks'
 
 const formSchema = z.object({
   email: z.string().email('Incorrect email'),
@@ -31,9 +34,7 @@ export const SignIn = () => {
   const onSubmit: SubmitHandler<FormSchemaType> = data => {
     signIn(data)
       .unwrap()
-      .catch(err => {
-        console.log(err)
-      })
+      .catch(err => err)
   }
 
   useEffect(() => {
